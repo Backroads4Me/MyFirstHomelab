@@ -1,3 +1,13 @@
+---
+title: README
+description: 
+published: false
+date: 2024-11-27T07:09:35.004Z
+tags: 
+editor: markdown
+dateCreated: 2024-11-27T05:58:42.089Z
+---
+
 # Your First Homelab Made Simple
 
 ---

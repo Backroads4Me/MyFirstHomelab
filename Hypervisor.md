@@ -2,8 +2,8 @@
 title: Hypervisor Installation
 description: Installing and configuring Proxmox VE for your first homelab
 published: 1
-date: 2024-12-06T10:55:00.000Z
-tags: hypervisor, proxmox, virtualization
+date: 2024-11-27T03:01:33.653Z
+tags: hypervisor
 editor: markdown
 dateCreated: 2024-12-06T10:55:00.000Z
 ---

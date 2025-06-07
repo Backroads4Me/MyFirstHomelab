@@ -1,11 +1,11 @@
 ---
 title: Home
 description: 
-published: 1
-date: 2024-11-26T09:05:35.508Z
+published: true
+date: 2024-11-27T08:27:25.901Z
 tags: 
 editor: markdown
-dateCreated: 2024-11-26T09:05:35.508Z
+dateCreated: 2024-11-27T05:51:03.393Z
 ---
 
 <h1 style="text-align: center; font-size: 3.5rem; margin: 1rem 0; background: linear-gradient(45deg, #00ffff, #ff00ff); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: 0 0 20px rgba(0, 255, 255, 0.1);">
