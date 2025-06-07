@@ -22,11 +22,9 @@ These are the core applications that help you manage, monitor, and get the most 
 We'll set up these essential services:
 
 1. **Docker** - Container platform for easy application deployment
-2. **Portainer** - Web interface for managing Docker containers
+2. **Dockge** - Modern Docker Compose management interface
 3. **Heimdall** - Dashboard to organize all your services
-4. **Uptime Kuma** - Monitor your services and get alerts
-5. **File Browser** - Web-based file management
-6. **Watchtower** - Automatic container updates
+4. **Watchtower** - Automatic container updates
 
 **Why these services?**
 - **Easy to install and manage**
@@ -115,38 +113,90 @@ If you see "Hello from Docker!" your installation is successful!
 
 ---
 
-## Step 2: Setting Up Portainer
+## Step 2: Setting Up Dockge
 
-Portainer provides a web interface for managing Docker containers - perfect for beginners!
+Dockge is a modern, self-hosted Docker Compose stack-oriented manager. It provides a clean web interface specifically designed for managing Docker Compose stacks, making it perfect for homelab environments where you manage multiple services.
 
-### Install Portainer
+### Why Dockge?
+
+- **Stack-focused**: Designed specifically for Docker Compose management
+- **Interactive editor**: Built-in compose file editor with syntax highlighting
+- **Real-time logs**: View container logs directly in the web interface
+- **Terminal access**: Execute commands directly in containers
+- **Update management**: Easy stack updates and rollbacks
+- **Lightweight**: Minimal resource usage compared to alternatives
+
+### Install Dockge
+
+First, create a directory structure for Dockge:
 
 ```bash
-# Create a volume for Portainer data
-docker volume create portainer_data
+# Create Dockge directory
+mkdir -p ~/dockge/stacks
+cd ~/dockge
 
-# Run Portainer container
-docker run -d \
-  --name portainer \
-  --restart unless-stopped \
-  -p 8000:8000 \
-  -p 9443:9443 \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -v portainer_data:/data \
-  portainer/portainer-ce:latest
+# Create docker-compose.yml for Dockge
+nano docker-compose.yml
 ```
 
-### Access Portainer
+Add this configuration:
+
+```yaml
+version: '3.8'
+
+services:
+  dockge:
+    image: louislam/dockge:1
+    container_name: dockge
+    restart: unless-stopped
+    ports:
+      - "5001:5001"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/app/data
+      - ./stacks:/opt/stacks
+    environment:
+      - DOCKGE_STACKS_DIR=/opt/stacks
+```
+
+### Start Dockge
+
+```bash
+# Create data directory
+mkdir -p data
+
+# Start Dockge
+docker compose up -d
+
+# Verify it's running
+docker compose ps
+```
+
+### Access Dockge
 
 1. **Open your web browser**
-2. **Navigate to**: `https://your-vm-ip:9443`
-3. **Accept the security warning** (self-signed certificate)
-4. **Create admin account**:
-   - Username: `admin`
+2. **Navigate to**: `http://your-vm-ip:5001`
+3. **Create admin account**:
+   - Username: Choose your preferred username
    - Password: Choose a strong password
-5. **Select "Get Started"** and choose "Docker" environment
+4. **Complete setup**: Follow the initial setup wizard
 
-You now have a web interface for managing Docker!
+### Using Dockge
+
+**Creating a New Stack:**
+1. Click "Compose" in the sidebar
+2. Click "+" to create a new stack
+3. Give your stack a name
+4. Write or paste your docker-compose.yml content
+5. Click "Deploy" to start the stack
+
+**Managing Existing Stacks:**
+- **View logs**: Click on any stack to see real-time logs
+- **Edit compose**: Use the built-in editor to modify configurations
+- **Start/Stop**: Control individual stacks or services
+- **Terminal access**: Execute commands directly in containers
+
+You now have a powerful Docker Compose management interface!
 
 ---
 
@@ -188,29 +238,6 @@ services:
       - "8443:443"
     restart: unless-stopped
 
-  # Uptime Kuma - Service Monitoring
-  uptime-kuma:
-    image: louislam/uptime-kuma:1
-    container_name: uptime-kuma
-    volumes:
-      - ./uptime-kuma:/app/data
-    ports:
-      - "3001:3001"
-    restart: unless-stopped
-
-  # File Browser - Web File Management
-  filebrowser:
-    image: filebrowser/filebrowser:latest
-    container_name: filebrowser
-    volumes:
-      - ./filebrowser/database.db:/database.db
-      - ./filebrowser/config.json:/config.json
-      - /home:/srv/home
-      - ./data:/srv/data
-    ports:
-      - "8082:80"
-    restart: unless-stopped
-
   # Watchtower - Automatic Updates
   watchtower:
     image: containrrr/watchtower:latest
@@ -231,7 +258,7 @@ networks:
 
 ```bash
 # Create necessary directories
-mkdir -p heimdall uptime-kuma filebrowser data
+mkdir -p heimdall data
 
 # Start all services
 docker compose up -d
@@ -249,27 +276,23 @@ docker compose ps
 1. **Access**: `http://your-vm-ip:8080`
 2. **First setup**: Click through the welcome screens
 3. **Add applications**: Click the "+" to add your services:
-   - **Portainer**: `https://your-vm-ip:9443`
-   - **Uptime Kuma**: `http://your-vm-ip:3001`
-   - **File Browser**: `http://your-vm-ip:8082`
+   - **Dockge**: `http://your-vm-ip:5001`
+   - **Proxmox**: `https://your-proxmox-ip:8006`
 
-### Uptime Kuma Monitoring (Port 3001)
+### Managing Your Stack with Dockge
 
-1. **Access**: `http://your-vm-ip:3001`
-2. **Create admin account**: Set username and password
-3. **Add monitors**:
-   - **Heimdall**: HTTP monitor for `http://your-vm-ip:8080`
-   - **Portainer**: HTTPS monitor for `https://your-vm-ip:9443`
-   - **Proxmox**: HTTPS monitor for `https://your-proxmox-ip:8006`
+Now that your services are running, you can use Dockge to manage them:
 
-### File Browser (Port 8082)
+1. **Access Dockge**: `http://your-vm-ip:5001`
+2. **View your stack**: You should see your homelab-stack listed
+3. **Monitor services**: Click on the stack to view real-time logs
+4. **Make changes**: Use the built-in editor to modify your docker-compose.yml
+5. **Deploy updates**: Click "Deploy" after making changes
 
-1. **Access**: `http://your-vm-ip:8082`
-2. **Default login**:
-   - Username: `admin`
-   - Password: `admin`
-3. **Change password**: Go to Settings → User Management
-4. **Explore**: You can now manage files through the web interface
+**Pro Tips:**
+- Use Dockge's terminal feature to execute commands directly in containers
+- The logs view helps troubleshoot issues with individual services
+- You can create additional stacks for different projects or environments
 
 ---
 
@@ -278,31 +301,29 @@ docker compose ps
 ### What You've Accomplished
 
 - **Docker platform**: Foundation for running containerized applications
-- **Portainer**: Easy container management through web interface
+- **Dockge**: Modern Docker Compose management interface
 - **Heimdall**: Central dashboard for all your services
-- **Uptime Kuma**: Monitoring to know when services are down
-- **File Browser**: Web-based file management
 - **Watchtower**: Automatic updates for your containers
 
 ### Service URLs Summary
 
 Create bookmarks for easy access:
 - **Proxmox**: `https://your-proxmox-ip:8006`
-- **Portainer**: `https://your-vm-ip:9443`
+- **Dockge**: `http://your-vm-ip:5001`
 - **Heimdall**: `http://your-vm-ip:8080`
-- **Uptime Kuma**: `http://your-vm-ip:3001`
-- **File Browser**: `http://your-vm-ip:8082`
 
 ### Directory Structure
 
-Your homelab stack is organized like this:
+Your homelab is organized like this:
 ```
-~/homelab-stack/
-├── docker-compose.yml     # Service definitions
-├── heimdall/             # Heimdall configuration
-├── uptime-kuma/          # Uptime Kuma data
-├── filebrowser/          # File Browser config
-└── data/                 # Shared data directory
+~/dockge/                 # Dockge installation
+├── docker-compose.yml    # Dockge service definition
+├── data/                 # Dockge configuration data
+└── stacks/               # Your Docker Compose stacks
+    └── homelab-stack/    # Your main services stack
+        ├── docker-compose.yml
+        ├── heimdall/
+        └── data/
 ```
 
 ---
@@ -319,7 +340,7 @@ docker compose logs
 docker compose logs heimdall
 
 # Follow logs in real-time
-docker compose logs -f uptime-kuma
+docker compose logs -f heimdall
 ```
 
 ### Managing Services
@@ -345,8 +366,9 @@ docker compose up -d
 # Create backup directory
 mkdir ~/backups
 
-# Backup your entire stack
-tar -czf ~/backups/homelab-stack-$(date +%Y%m%d).tar.gz ~/homelab-stack/
+# Backup your entire homelab setup
+tar -czf ~/backups/dockge-$(date +%Y%m%d).tar.gz ~/dockge/
+tar -czf ~/backups/homelab-stack-$(date +%Y%m%d).tar.gz ~/dockge/stacks/homelab-stack/
 
 # List backups
 ls -la ~/backups/
@@ -360,8 +382,8 @@ You now have a solid foundation for your homelab! Here are your next steps:
 
 ### Immediate Tasks
 1. **Customize Heimdall**: Add more applications and organize your dashboard
-2. **Set up monitoring**: Configure Uptime Kuma alerts (email, Discord, etc.)
-3. **Explore Portainer**: Learn to manage containers through the web interface
+2. **Explore Dockge**: Learn to manage Docker Compose stacks through the web interface
+3. **Add monitoring**: Consider adding Uptime Kuma or Grafana for service monitoring
 4. **Create backups**: Set up regular backup routines
 
 ### Expansion Ideas
@@ -399,8 +421,11 @@ docker stats
 
 ### Permission Issues
 ```bash
-# Fix file permissions
-sudo chown -R $USER:$USER ~/homelab-stack/
+# Fix file permissions for Dockge
+sudo chown -R $USER:$USER ~/dockge/
+
+# Fix file permissions for stacks
+sudo chown -R $USER:$USER ~/dockge/stacks/
 
 # Check Docker group membership
 groups $USER
@@ -433,7 +458,7 @@ docker compose up -d
 ### Access Control
 - **Change default passwords**: Never use default credentials
 - **Limit access**: Only expose necessary ports
-- **Monitor access**: Use Uptime Kuma to track service availability
+- **Monitor access**: Consider adding monitoring tools to track service availability
 
 ### Data Protection
 - **Regular backups**: Automate backup creation

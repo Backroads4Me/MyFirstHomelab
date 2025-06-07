@@ -17,14 +17,31 @@ Proxmox Virtual Environment (VE) is a complete server virtualization management 
 
 ---
 
-## Why Proxmox VE?
+## The Case for Proxmox
 
-For your first homelab, Proxmox VE is an excellent choice because:
-- **Free and open-source** with enterprise features
-- **Web-based management** - no need for complex command-line work
-- **Supports both VMs and containers** for maximum flexibility
-- **Active community** with lots of tutorials and support
-- **Professional-grade features** that you can grow into
+Native Virtualization and Container Support: Proxmox VE (Virtual Environment) is built with virtualization and containerization in mind. It supports both KVM for virtual machines and LXC for containers, offering a flexible, integrated environment for all your services.
+
+Web-Based Management Interface: Proxmox comes with a comprehensive, yet intuitive, web GUI. This allows for easy management of virtual machines, containers, storage, and even cluster configurations without the need for an SSH window for every task.
+
+Backup and Restore Features: Proxmox has robust backup mechanisms, allowing for quick snapshots and restores of your VMs and containers. This functionality is vital for experimentation and recovery scenarios in a Homelab setting.
+
+Resource Monitoring and Reporting: Proxmox provides real-time reporting and monitoring of resources, making it easier to optimize the usage of your hardware based on specific needs.
+
+Security Measures: From built-in firewalls to various authentication methods, Proxmox offers a variety of security options, crucial for an environment that might eventually face exposure to the internet.
+
+Proxmox offers a slew of features tailored for a Homelab setup. Its focus on containerization, virtualization, and ease of management makes it a more fitting choice for those specifically interested in a robust, scalable Homelab server environment. Therefore, despite my comfort level with Ubuntu, the feature set of Proxmox tipped the scales.
+
+For beginners venturing into virtualization, Proxmox VE (Virtual Environment) stands out as an excellent choice. It's a powerful, open-source platform designed for creating and managing virtual machines and containers. Here's why Proxmox VE is beginner-friendly:
+
+Proxmox VE boasts an intuitive web interface that simplifies virtual machine creation, configuration, and monitoring, eliminating the need for complex command-line operations.
+
+Comprehensive Documentation
+
+Extensive and well-structured documentation, along with a vibrant community forum, provide abundant resources for learning and troubleshooting.
+
+Easy Installation
+
+Proxmox VE can be installed directly on your hardware or as a virtual machine itself, offering a straightforward setup process.
 
 ---
 
@@ -32,7 +49,7 @@ For your first homelab, Proxmox VE is an excellent choice because:
 
 Before we start, make sure you have:
 - [ ] Your server hardware prepared (from the previous section)
-- [ ] USB drive with Ventoy and Proxmox ISO
+- [ ] USB drive with Rufus and Proxmox ISO
 - [ ] Network information (IP address, gateway, DNS)
 - [ ] Another computer for remote access
 - [ ] About 30-60 minutes of time
@@ -64,17 +81,22 @@ Before we start, make sure you have:
 
 ### Step 2: Prepare Your Installation Media
 
-If you followed the Server Setup guide, you should already have Ventoy on your USB drive:
+If you followed the Server Setup guide, you should already have Rufus ready:
 
-1. **Copy the Proxmox ISO** to your Ventoy USB drive
-2. **Safely eject** the USB drive
-3. **Insert it into your server**
+1. **Launch Rufus** on your computer
+2. **Select your USB drive** from the Device dropdown
+3. **Click "SELECT"** and choose the Proxmox ISO file you downloaded
+4. **Leave all other settings as default** (Rufus will auto-configure for the ISO)
+5. **Click "START"** to create the bootable USB drive
+6. **Wait for the process to complete** (usually 5-10 minutes)
+7. **Safely eject** the USB drive
+8. **Insert it into your server**
 
 ### Step 3: Boot and Start Installation
 
 1. **Power on your server** with the USB drive inserted
 2. **Select the USB drive** from the boot menu (usually F12 or F11)
-3. **Choose "Proxmox VE"** from the Ventoy menu
+3. **The Proxmox installer will start automatically**
 4. **Select "Install Proxmox VE"** (the first option)
 
 ### Step 4: Basic Installation Configuration
@@ -337,7 +359,7 @@ While we've kept security simple for this initial setup, here are important cons
     <a href="/en/Server" style="padding: 1rem 2rem; font-size: 1.1rem; font-weight: 600; text-decoration: none; border-radius: 25px; text-transform: uppercase; letter-spacing: 1px; background: linear-gradient(45deg, #ff6b6b, #ee5a24); color: white; box-shadow: 0 5px 15px rgba(238, 90, 36, 0.4); transition: all 0.3s ease;">
         ← Server Setup
     </a>
-    <a href="/en/First-VM" style="padding: 1rem 2rem; font-size: 1.1rem; font-weight: 600; text-decoration: none; border-radius: 25px; text-transform: uppercase; letter-spacing: 1px; background: linear-gradient(45deg, #00ffff, #00d4ff); color: #1a1a2e; box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4); transition: all 0.3s ease;">
-        First VM →
+    <a href="/en/VS-Code-SSH" style="padding: 1rem 2rem; font-size: 1.1rem; font-weight: 600; text-decoration: none; border-radius: 25px; text-transform: uppercase; letter-spacing: 1px; background: linear-gradient(45deg, #00ffff, #00d4ff); color: #1a1a2e; box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4); transition: all 0.3s ease;">
+        VS Code Setup →
     </a>
 </div>

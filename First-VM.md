@@ -1,205 +1,215 @@
 ---
-title: Creating Your First Virtual Machine
-description: Step-by-step guide to creating and configuring your first VM in Proxmox
+title: Creating Your First LXC Container
+description: Step-by-step guide to creating and configuring your first LXC container in Proxmox
 published: 1
 date: 2024-12-06T10:57:00.000Z
-tags: virtual-machine, vm, proxmox, beginner
+tags: lxc, container, proxmox, debian, beginner
 editor: markdown
 dateCreated: 2024-12-06T10:57:00.000Z
 ---
 
-# Creating Your First Virtual Machine
+# Creating Your First LXC Container
 
-Congratulations on getting Proxmox installed! Now comes the exciting part—creating your first virtual machine (VM). Think of this as building a computer inside your computer.
+Congratulations on getting Proxmox installed! Now comes the exciting part—creating your first LXC container. Think of this as building a lightweight, efficient virtual environment that shares your host's kernel.
 
-**What is a Virtual Machine?**
-A VM is a complete computer system that runs inside your physical server. It has its own CPU allocation, memory, storage, and network connection, but it's all virtualized by Proxmox.
-
----
-
-## Why Start with a VM?
-
-For beginners, VMs are perfect because:
-- **Familiar environment**: VMs work just like physical computers
-- **Complete isolation**: If something breaks, it won't affect your host system
-- **Easy to rebuild**: Made a mistake? Delete it and start over!
-- **Learning platform**: Perfect for experimenting with new operating systems
+**What is an LXC Container?**
+An LXC (Linux Container) is a lightweight virtualization method that runs isolated Linux systems on a single host. Unlike virtual machines, containers share the host's kernel, making them much more efficient with resources while still providing strong isolation.
 
 ---
 
-## Choosing Your First Operating System
+## Why Start with LXC Containers?
 
-For your first VM, we recommend **Ubuntu Server 22.04 LTS** because:
-- **Beginner-friendly**: Well-documented with lots of community support
-- **Lightweight**: Runs well with minimal resources
-- **Long-term support**: Stable and supported until 2027
-- **Great for learning**: Most homelab tutorials use Ubuntu
+For homelab enthusiasts, LXC containers are ideal because:
+- **Resource efficient**: Use significantly less RAM and CPU than VMs
+- **Fast startup**: Boot in seconds, not minutes
+- **Easy management**: Simple to create, clone, and destroy
+- **Perfect for services**: Ideal for web servers, databases, and network services
+- **Proxmox native**: Deeply integrated with Proxmox for optimal performance
+
+---
+
+## Understanding LXC vs Virtual Machines
+
+**LXC Containers:**
+- Share the host kernel
+- Minimal resource overhead
+- Fast boot times
+- Perfect for Linux services
+- Cannot run different operating systems
+
+**Virtual Machines:**
+- Complete operating system isolation
+- Higher resource usage
+- Slower boot times
+- Can run any operating system
+- Better for desktop environments
+
+**When to choose LXC:**
+- Running Linux services (web servers, databases)
+- Development environments
+- Network services (DNS, DHCP, VPN)
+- Microservices architecture
+- Resource-constrained environments
+
+---
+
+## Choosing Your First Container OS
+
+For your first LXC container, we recommend **Debian 12** because:
+- **Same base as Proxmox**: Proxmox is built on Debian, ensuring compatibility
+- **Lightweight**: Minimal resource usage
+- **Stable**: Rock-solid reliability for services
+- **Package management**: Excellent APT package system
+- **Long-term support**: Stable and well-maintained
 
 **Alternative options:**
-- **Ubuntu Desktop**: If you want a graphical interface
-- **Debian**: More minimal, similar to Ubuntu
-- **CentOS Stream**: If you want to learn Red Hat-style Linux
+- **Ubuntu**: If you prefer Ubuntu's package versions
+- **Alpine Linux**: Extremely lightweight for microservices
+- **CentOS Stream**: For Red Hat-style environments
 
 ---
 
-## Pre-Installation Checklist
+## Pre-Creation Checklist
 
-Before creating your VM, gather:
-- [ ] **ISO file**: Ubuntu Server 22.04 LTS downloaded
+Before creating your container, ensure:
+- [ ] **Template downloaded**: Debian 12 container template available
 - [ ] **Resource planning**: Decide on CPU, RAM, and storage allocation
 - [ ] **Network information**: Know your network setup
-- [ ] **Time**: About 30-45 minutes for creation and basic setup
+- [ ] **Purpose defined**: Know what service this container will run
+- [ ] **Time**: About 10-15 minutes for creation and basic setup
 
 ---
 
-## Step 1: Download Ubuntu Server
+## Step 1: Download Container Template
 
-1. **Visit Ubuntu's website**: [https://ubuntu.com/download/server](https://ubuntu.com/download/server)
-2. **Download Ubuntu Server 22.04 LTS**: Choose the LTS (Long Term Support) version
-3. **Upload to Proxmox**:
-   - In Proxmox web interface, click on your server name
-   - Go to "local (your-server)" storage
-   - Click "ISO Images"
-   - Click "Upload" and select your downloaded Ubuntu ISO
+### Accessing Container Templates
+
+1. **Navigate to your Proxmox node** in the web interface
+2. **Click on your server name** (e.g., "pve")
+3. **Go to "local" storage**
+4. **Click "CT Templates"**
+5. **Click "Templates"** button
+
+### Download Debian Template
+
+1. **Find Debian section** in the template list
+2. **Select "debian-12-standard"** (latest stable version)
+3. **Click "Download"**
+4. **Wait for download** (usually 1-2 minutes)
+
+The template will be stored locally and ready for container creation.
 
 ---
 
-## Step 2: Create the Virtual Machine
+## Step 2: Create the LXC Container
 
-### Starting the VM Creation
+### Starting Container Creation
 
-1. **Click "Create VM"** (blue button in top-right corner)
-2. **VM ID**: Leave as default (usually 100) or choose your own number
-3. **Name**: Give it a descriptive name like "ubuntu-server-01"
-4. **Click "Next"**
+1. **Click "Create CT"** (blue button in top-right corner)
+2. **Node**: Should show your Proxmox server
+3. **CT ID**: Leave as default (usually 100) or choose your own number
+4. **Hostname**: Give it a descriptive name like "debian-web-01"
+5. **Resource Pool**: Leave empty for now
+6. **Password**: Set a strong root password
+7. **SSH public key**: Leave empty for now (we'll set up SSH later)
+8. **Click "Next"**
 
-### OS Configuration
+### Template Selection
 
-1. **ISO Image**: Select the Ubuntu Server ISO you uploaded
-2. **Guest OS**: 
-   - **Type**: Linux
-   - **Version**: 6.x - 2.6 Kernel (or leave as default)
+1. **Storage**: local (where you downloaded the template)
+2. **Template**: Select "debian-12-standard" from dropdown
 3. **Click "Next"**
 
-### System Configuration
+### Root Disk Configuration
 
-1. **Graphic card**: Default (VGA) is fine for servers
-2. **Machine**: Default (q35) is recommended
-3. **BIOS**: OVMF (UEFI) for modern systems, or SeaBIOS for compatibility
-4. **SCSI Controller**: VirtIO SCSI (best performance)
-5. **Click "Next"**
-
-### Hard Disk Configuration
-
-1. **Bus/Device**: VirtIO Block (best performance)
-2. **Storage**: local-lvm (default)
-3. **Disk size**: 
-   - **Minimum**: 20GB
-   - **Recommended**: 32GB for learning
-   - **Advanced users**: 50GB+ if you plan to install lots of software
-4. **Click "Next"**
+1. **Storage**: local-lvm (default)
+2. **Disk size**: 
+   - **Minimum**: 4GB for basic services
+   - **Recommended**: 8GB for comfortable use
+   - **Web services**: 12GB if hosting websites
+   - **Database services**: 16GB+ for databases
+3. **Click "Next"**
 
 ### CPU Configuration
 
-1. **Sockets**: 1 (unless you have specific needs)
-2. **Cores**: 
-   - **Minimum**: 1 core
+1. **Cores**: 
+   - **Minimum**: 1 core for basic services
    - **Recommended**: 2 cores for better performance
-3. **Type**: Default (kvm64) or host if you want best performance
+   - **Web/Database**: 2-4 cores depending on load
+2. **CPU limit**: Leave empty (no limit)
+3. **CPU units**: 1024 (default weight)
 4. **Click "Next"**
 
 ### Memory Configuration
 
 1. **Memory (MiB)**: 
-   - **Minimum**: 1024 (1GB) for basic server
-   - **Recommended**: 2048 (2GB) for comfortable use
-   - **Advanced**: 4096 (4GB) if you have plenty of RAM
-2. **Click "Next"**
+   - **Basic services**: 512MB (0.5GB)
+   - **Web server**: 1024MB (1GB)
+   - **Database**: 2048MB (2GB)
+   - **Multiple services**: 1536MB (1.5GB)
+2. **Swap (MiB)**: 
+   - **Recommended**: Same as memory or 512MB minimum
+3. **Click "Next"**
 
 ### Network Configuration
 
 1. **Bridge**: vmbr0 (default bridge)
-2. **Model**: VirtIO (paravirtualized) for best performance
-3. **MAC address**: Leave auto-generated
+2. **IPv4**: DHCP (automatic IP assignment)
+   - **For static IP**: Choose "Static" and enter IP/Gateway/DNS
+3. **IPv6**: DHCP (or disable if not needed)
 4. **Click "Next"**
+
+### DNS Configuration
+
+1. **DNS domain**: Leave empty or enter your local domain
+2. **DNS servers**: Leave empty to use host settings
+3. **Click "Next"**
 
 ### Confirm and Create
 
 1. **Review all settings** carefully
-2. **Check "Start after created"** if you want to boot immediately
+2. **Check "Start after created"** to boot immediately
 3. **Click "Finish"**
 
 ---
 
-## Step 3: Installing Ubuntu Server
+## Step 3: First Boot and Initial Setup
 
-### Starting the Installation
+### Starting Your Container
 
-1. **Select your VM** from the left panel
-2. **Click "Console"** to see the VM's screen
-3. **Choose "Try or Install Ubuntu Server"** (first option)
-
-### Installation Process
-
-#### Language and Keyboard
-1. **Language**: Choose your language (English is recommended for tutorials)
-2. **Keyboard**: Select your keyboard layout
-
-#### Network Configuration
-1. **Network**: Should auto-configure via DHCP
-2. **If you want static IP**: 
-   - Select your network interface
-   - Choose "Edit IPv4"
-   - Set manual configuration with your planned IP address
-
-#### Storage Configuration
-1. **Storage**: Choose "Use an entire disk"
-2. **Select the virtual disk** Proxmox created
-3. **Confirm the layout** (default is usually fine)
-
-#### Profile Setup
-1. **Your name**: Enter your full name
-2. **Server name**: Choose a hostname (e.g., "ubuntu-vm-01")
-3. **Username**: Create a username (avoid "admin" or "root")
-4. **Password**: Choose a strong password
-
-#### SSH Setup
-1. **Install OpenSSH server**: ✅ **Check this box**
-2. **Import SSH identity**: Skip for now (you can set this up later)
-
-#### Featured Server Snaps
-1. **Skip for now**: Don't install any additional software yet
-2. **You can install these later** once you're more comfortable
-
-### Completing Installation
-
-1. **Wait for installation** (usually 10-15 minutes)
-2. **Reboot when prompted**
-3. **Remove installation media**: Proxmox handles this automatically
-
----
-
-## Step 4: First Login and Basic Setup
-
-### Logging In
-
-1. **Wait for boot process** (watch the console)
-2. **Login prompt**: Enter your username and password
-3. **You're in!** You should see a command prompt
+1. **Select your container** from the left panel (CT 100)
+2. **Click "Console"** to access the container
+3. **Wait for boot** (should be very fast - under 10 seconds)
+4. **Login as root** with the password you set
 
 ### Basic System Updates
 
-Run these commands to update your system:
+Update your container with the latest packages:
 
 ```bash
 # Update package lists
-sudo apt update
+apt update
 
 # Upgrade installed packages
-sudo apt upgrade -y
+apt upgrade -y
 
-# Install useful tools
-sudo apt install -y curl wget vim htop tree
+# Install essential tools
+apt install -y curl wget vim htop tree sudo openssh-server
+```
+
+### Create a Regular User
+
+It's good practice to create a non-root user:
+
+```bash
+# Create a new user (replace 'username' with your preferred name)
+adduser username
+
+# Add user to sudo group
+usermod -aG sudo username
+
+# Switch to the new user
+su - username
 ```
 
 ### Check System Information
@@ -216,47 +226,84 @@ df -h
 
 # Check network configuration
 ip addr show
+
+# Check container-specific info
+cat /proc/version
 ```
 
 ---
 
-## Step 5: Basic VM Management
+## Step 4: Container Management Basics
 
 ### Using the Proxmox Interface
 
-**Start VM**: Click "Start" button
-**Stop VM**: Click "Stop" button (graceful shutdown)
-**Shutdown**: Click "Shutdown" (sends shutdown signal to OS)
-**Reset**: Click "Reset" (hard restart - use sparingly)
+**Start Container**: Click "Start" button
+**Stop Container**: Click "Stop" button (graceful shutdown)
+**Shutdown**: Click "Shutdown" (sends shutdown signal)
+**Reboot**: Click "Reboot" (restart container)
 
 ### Console Access
 
-**Console**: Built-in VNC console (what you've been using)
-**SSH**: More convenient for command-line work
-**SPICE**: Enhanced console with better performance
+**Console**: Built-in console access (what you've been using)
+**SSH**: More convenient for remote management
+**Shell**: Direct shell access from Proxmox
 
-### VM Settings
+### Container Settings
 
-You can modify your VM settings when it's stopped:
-- **Hardware**: Add/remove virtual hardware
-- **Options**: Change boot order, startup behavior
+You can modify container settings when it's stopped:
+- **Resources**: Adjust CPU, memory, and disk
+- **Network**: Modify network configuration
+- **Options**: Change startup behavior and features
 - **Backup**: Configure automatic backups
 - **Snapshots**: Create point-in-time backups
 
+### Container Features
+
+LXC containers support various features:
+- **Nesting**: Run containers inside containers
+- **FUSE**: Filesystem in userspace support
+- **Keyctl**: Kernel keyring support
+- **Mount**: Additional mount points
+
 ---
 
-## Step 6: Setting Up SSH Access
+## Step 5: Setting Up SSH Access
 
-SSH makes it much easier to manage your VM from your main computer:
+SSH makes container management much easier from your main computer:
 
-### Find Your VM's IP Address
+### Enable SSH Service
 
-In your VM console:
 ```bash
-ip addr show
+# Ensure SSH is installed and running
+sudo systemctl enable ssh
+sudo systemctl start ssh
+sudo systemctl status ssh
 ```
 
-Look for an IP address like `192.168.1.xxx`
+### Configure SSH (Optional Security)
+
+```bash
+# Edit SSH configuration
+sudo vim /etc/ssh/sshd_config
+
+# Recommended changes:
+# PermitRootLogin no
+# PasswordAuthentication yes (or no if using keys)
+# Port 22 (or change to custom port)
+
+# Restart SSH after changes
+sudo systemctl restart ssh
+```
+
+### Find Your Container's IP Address
+
+```bash
+# Show IP address
+ip addr show eth0
+
+# Or use hostname command
+hostname -I
+```
 
 ### Connect from Your Main Computer
 
@@ -274,56 +321,118 @@ ssh username@192.168.1.xxx
 
 ---
 
+## Step 6: Container Optimization
+
+### Resource Monitoring
+
+Monitor your container's resource usage:
+
+```bash
+# Check memory usage
+free -h
+
+# Check CPU usage
+htop
+
+# Check disk usage
+df -h
+
+# Check network usage
+iftop  # Install with: apt install iftop
+```
+
+### Performance Tuning
+
+**Memory optimization:**
+```bash
+# Check swap usage
+swapon --show
+
+# Adjust swappiness (lower = less swap usage)
+echo 'vm.swappiness=10' | sudo tee -a /etc/sysctl.conf
+```
+
+**Disk optimization:**
+```bash
+# Check disk I/O
+iostat  # Install with: apt install sysstat
+
+# Clean package cache
+sudo apt autoremove
+sudo apt autoclean
+```
+
+---
+
 ## What's Next?
 
-Congratulations! You've successfully created and configured your first virtual machine. Here's what you can do next:
+Congratulations! You've successfully created and configured your first LXC container. Here's what you can do next:
 
 ### Immediate Next Steps
-1. **Explore the command line**: Get comfortable with basic Linux commands
-2. **Install software**: Try installing applications with `apt install`
-3. **Create snapshots**: Learn to backup your VM state
-4. **Set up file sharing**: Access files between your VM and main computer
+1. **Install a service**: Set up a web server (Apache/Nginx)
+2. **Create more containers**: Try different services in separate containers
+3. **Learn container networking**: Connect containers together
+4. **Set up backups**: Configure automatic container backups
 
-### Learning Opportunities
-- **Web server**: Install Apache or Nginx
-- **Database**: Set up MySQL or PostgreSQL
-- **Docker**: Learn containerization
-- **Monitoring**: Install system monitoring tools
+### Popular Container Services
+- **Web server**: Install Nginx or Apache
+- **Database**: Set up MariaDB or PostgreSQL
+- **File sharing**: Install Nextcloud or Samba
+- **Monitoring**: Set up Prometheus or Grafana
+- **DNS**: Configure Pi-hole or Unbound
 
-### Best Practices
-- **Regular updates**: Keep your system updated
+### Container Best Practices
+- **One service per container**: Keep containers focused
+- **Regular updates**: Keep containers updated
 - **Snapshots before changes**: Always backup before major changes
-- **Document your setup**: Keep notes on what you've configured
+- **Resource monitoring**: Watch CPU and memory usage
+- **Security updates**: Enable automatic security updates
+
+### Advanced Topics
+- **Container templates**: Create your own custom templates
+- **Container clustering**: Link multiple containers
+- **Load balancing**: Distribute traffic across containers
+- **Container orchestration**: Use Docker Swarm or Kubernetes
 
 ---
 
 ## Troubleshooting Common Issues
 
-### VM Won't Start
-- **Check resources**: Ensure enough RAM/CPU available
+### Container Won't Start
+- **Check resources**: Ensure enough RAM available on host
 - **Storage space**: Verify sufficient disk space
-- **ISO mounting**: Make sure ISO is properly uploaded
+- **Template issues**: Re-download container template
+- **Check logs**: View container logs in Proxmox
 
 ### Can't Connect via SSH
-- **Check IP address**: Verify VM's IP with `ip addr show`
-- **Firewall**: Ubuntu's firewall (ufw) might be blocking connections
-- **SSH service**: Ensure SSH is running with `sudo systemctl status ssh`
+- **Check IP address**: Verify container's IP with `ip addr show`
+- **SSH service**: Ensure SSH is running with `systemctl status ssh`
+- **Firewall**: Check if firewall is blocking connections
+- **Network bridge**: Verify network bridge configuration
 
-### VM is Slow
-- **Increase RAM**: 1GB might not be enough for some tasks
-- **Add CPU cores**: More cores can improve performance
-- **Check host resources**: Ensure your physical server isn't overloaded
+### Container is Slow
+- **Increase memory**: Add more RAM allocation
+- **Add CPU cores**: Increase CPU allocation
+- **Check host load**: Ensure physical server isn't overloaded
+- **Disk I/O**: Check for disk bottlenecks
 
-### Console Issues
-- **Try different browsers**: Some browsers handle the console better
-- **Use SSH instead**: Often more reliable than web console
-- **Check network**: Ensure stable connection to Proxmox
+### Network Issues
+- **Bridge configuration**: Verify vmbr0 is properly configured
+- **IP conflicts**: Check for IP address conflicts
+- **DNS resolution**: Test DNS with `nslookup google.com`
+- **Gateway**: Verify default gateway is correct
+
+### Package Management Issues
+- **Update sources**: Run `apt update` to refresh package lists
+- **Broken packages**: Use `apt --fix-broken install`
+- **Disk space**: Ensure enough space with `df -h`
+- **Repository issues**: Check `/etc/apt/sources.list`
 
 ---
 
 <div style="display: flex; gap: 1.5rem; justify-content: space-between; margin-top: 3rem;">
-    <a href="/en/Hypervisor" style="padding: 1rem 2rem; font-size: 1.1rem; font-weight: 600; text-decoration: none; border-radius: 25px; text-transform: uppercase; letter-spacing: 1px; background: linear-gradient(45deg, #ff6b6b, #ee5a24); color: white; box-shadow: 0 5px 15px rgba(238, 90, 36, 0.4); transition: all 0.3s ease;">
-        ← Hypervisor
+    <a href="/en/VS-Code-SSH" style="padding: 1rem 2rem; font-size: 1.1rem; font-weight: 600; text-decoration: none; border-radius: 25px; text-transform: uppercase; letter-spacing: 1px; background: linear-gradient(45deg, #ff6b6b, #ee5a24); color: white; box-shadow: 0 5px 15px rgba(238, 90, 36, 0.4); transition: all 0.3s ease;">
+        ← VS Code Setup
     </a>
     <a href="/en/Essential-Services" style="padding: 1rem 2rem; font-size: 1.1rem; font-weight: 600; text-decoration: none; border-radius: 25px; text-transform: uppercase; letter-spacing: 1px; background: linear-gradient(45deg, #00ffff, #00d4ff); color: #1a1a2e; box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4); transition: all 0.3s ease;">
         Essential Services →
