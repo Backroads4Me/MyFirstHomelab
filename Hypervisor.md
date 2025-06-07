@@ -1,212 +1,343 @@
 ---
-title: Hypervisor
-description: 
+title: Hypervisor Installation
+description: Installing and configuring Proxmox VE for your first homelab
 published: 1
-date: 2024-11-26T09:33:21.218Z
-tags: hypervisor
+date: 2024-12-06T10:55:00.000Z
+tags: hypervisor, proxmox, virtualization
 editor: markdown
-dateCreated: 2024-11-26T09:33:21.218Z
+dateCreated: 2024-12-06T10:55:00.000Z
 ---
 
-# Homelab Project Guide
+# Installing Your Hypervisor: Proxmox VE
 
-## Project Overview
+Welcome to the exciting part—installing Proxmox VE! This is where your hardware becomes a powerful virtualization platform capable of running multiple "virtual computers" simultaneously.
 
-This guide provides a structured approach to building your first homelab using Proxmox VE. It's designed for beginners while maintaining best practices for security and stability.
-
-## Table of Contents
-
-1. [Project Vision](#project-vision)
-2. [Hardware Planning](#hardware-planning)
-3. [Proxmox Installation Guide](#proxmox-installation-guide)
-4. [Core Infrastructure Setup](#core-infrastructure-setup)
-5. [Application Deployment](#application-deployment)
-6. [Backup Strategy](#backup-strategy)
-7. [Remote Access](#remote-access)
-
-## Project Vision
-
-### Purpose
-- Create a beginner-friendly homelab environment
-- Focus on security and stability
-- Provide practical, hands-on experience
-
-### Target Audience
-- Homelab beginners
-- Tech enthusiasts with basic technical knowledge
-- Self-hosted service enthusiasts
-
-## Hardware Planning
-
-### Minimum Requirements
-- CPU: 64-bit dual-core processor (Intel EMT64 or AMD64)
-- RAM: 8GB minimum (16GB recommended)
-- Storage: 120GB SSD minimum
-- Network: Gigabit Ethernet
-
-### Recommended Setup
-- CPU: Quad-core or better
-- RAM: 32GB
-- Storage: 500GB SSD + Additional storage drives
-- Network: Multiple Gigabit Ethernet ports
-
-## Proxmox Installation Guide
-
-### Prerequisites
-- Proxmox VE ISO from [official website](https://www.proxmox.com/en/downloads)
-- USB drive (8GB minimum)
-- Ventoy for USB creation
-
-### Installation Steps
-
-#### 1. Prepare Installation Media
-
-1. Download Ventoy:
-   - Visit [Ventoy GitHub](https://github.com/ventoy/Ventoy/releases)
-   - Install on your USB drive
-
-2. Download Proxmox VE:
-   ```bash
-   # Verify the ISO checksum after downloading
-   sha256sum proxmox-ve_*.iso
-   ```
-
-3. Copy the ISO:
-   - Drag the Proxmox ISO to your Ventoy USB drive
-
-#### 2. BIOS Configuration
-
-1. Access BIOS/UEFI settings
-2. Enable:
-   - Virtualization (VT-x/AMD-V)
-   - IOMMU
-   - ECC (if available)
-3. Disable:
-   - Secure Boot
-   - CSM/Legacy Boot
-
-#### 3. Base Installation
-
-1. Boot from USB
-2. Select Proxmox VE installer
-3. Configure:
-   - Target disk (use entire disk for system)
-   - Location/Timezone
-   - Admin password (use strong password)
-   - Network settings (static IP recommended)
-
-#### 4. Initial Security Setup
-
-1. Generate SSH Key (on your workstation):
-   ```bash
-   ssh-keygen -t ed25519 -C "homelab-admin"
-   ```
-
-2. Create Admin User:
-   ```bash
-   # On Proxmox host
-   apt update
-   apt install sudo
-   useradd -m admin
-   usermod -aG sudo admin
-   ```
-
-3. Configure SSH:
-   ```bash
-   # Create SSH directory
-   mkdir -p /home/admin/.ssh
-   chmod 700 /home/admin/.ssh
-   
-   # Add your public key
-   nano /home/admin/.ssh/authorized_keys
-   chmod 600 /home/admin/.ssh/authorized_keys
-   chown -R admin:admin /home/admin/.ssh
-   ```
-
-4. Secure SSH Configuration:
-   ```bash
-   # Edit SSH config
-   nano /etc/ssh/sshd_config
-   ```
-   
-   Add:
-   ```
-   Port 22
-   PubkeyAuthentication yes
-   PasswordAuthentication no
-   PermitRootLogin prohibit-password
-   MaxAuthTries 3
-   ```
-
-#### 5. Repository Configuration
-
-Instead of using community scripts, manually configure repositories:
-
-1. Edit `/etc/apt/sources.list`:
-   ```bash
-   deb http://ftp.debian.org/debian bullseye main contrib
-   deb http://ftp.debian.org/debian bullseye-updates main contrib
-   deb http://security.debian.org/debian-security bullseye-security main contrib
-   ```
-
-2. Edit `/etc/apt/sources.list.d/pve-enterprise.list`:
-   ```bash
-   # Comment out enterprise repository
-   # deb https://enterprise.proxmox.com/debian/pve bullseye pve-enterprise
-   ```
-
-3. Add no-subscription repository:
-   ```bash
-   echo "deb http://download.proxmox.com/debian/pve bullseye pve-no-subscription" > /etc/apt/sources.list.d/pve-install-repo.list
-   ```
-
-4. Update system:
-   ```bash
-   apt update
-   apt full-upgrade
-   ```
-
-## Core Infrastructure Setup
-
-### Initial Container Setup
-
-1. Create LXC for Docker:
-   - OS: Ubuntu 22.04
-   - RAM: 4GB minimum
-   - Storage: 32GB minimum
-   - Features: Nesting enabled
-
-2. Install Docker Environment:
-   ```bash
-   # Install Docker and Dockge
-   apt update && apt install docker.io docker-compose
-   ```
-
-### Essential Applications
-
-1. Core Services:
-   - Heimdall (Dashboard)
-   - Dozzle (Log Management)
-   - Watchtower (Updates)
-   - Ntfy (Notifications)
-
-2. Utility Services:
-   - Actual Server (Budget Management)
-   - Stirling-PDF (PDF Tools)
-   - Readarr (Ebook Management)
-
-## Backup Strategy
-
-1. Configure Proxmox Backup Server
-2. Implement automated backups
-3. Test restore procedures
-
-## Remote Access
-
-1. Cloudflare Tunnel Setup
-2. Reverse Proxy Configuration
-3. Security Hardening
+**What is Proxmox VE?**
+Proxmox Virtual Environment (VE) is a complete server virtualization management solution. Think of it as the "operating system" that lets you create and manage virtual machines and containers on your server.
 
 ---
 
-> **Note**: This guide is part of a larger homelab documentation series. For additional resources, check the [Glossary](glossary.md) and [Further Reading](further-reading.md) sections.
+## Why Proxmox VE?
+
+For your first homelab, Proxmox VE is an excellent choice because:
+- **Free and open-source** with enterprise features
+- **Web-based management** - no need for complex command-line work
+- **Supports both VMs and containers** for maximum flexibility
+- **Active community** with lots of tutorials and support
+- **Professional-grade features** that you can grow into
+
+---
+
+## What You'll Need
+
+Before we start, make sure you have:
+- [ ] Your server hardware prepared (from the previous section)
+- [ ] USB drive with Ventoy and Proxmox ISO
+- [ ] Network information (IP address, gateway, DNS)
+- [ ] Another computer for remote access
+- [ ] About 30-60 minutes of time
+
+---
+
+## Understanding System Requirements
+
+### Minimum Requirements (Will Work)
+- **CPU**: 64-bit dual-core processor with virtualization support
+- **RAM**: 8GB (4GB for Proxmox + 4GB for your first VMs)
+- **Storage**: 120GB SSD minimum
+- **Network**: Gigabit Ethernet connection
+
+### Recommended Setup (Better Experience)
+- **CPU**: Quad-core or better (more VMs, better performance)
+- **RAM**: 32GB (comfortable for multiple VMs)
+- **Storage**: 500GB SSD + additional drives for data
+- **Network**: Multiple Gigabit Ethernet ports for advanced networking
+
+## Step-by-Step Installation
+
+### Step 1: Download Proxmox VE
+
+1. **Visit the official website**: [https://www.proxmox.com/en/downloads](https://www.proxmox.com/en/downloads)
+2. **Download the latest ISO**: Look for "Proxmox VE" (not Backup Server or Mail Gateway)
+3. **Verify the download** (optional but recommended):
+   - The website provides checksums to verify your download wasn't corrupted
+
+### Step 2: Prepare Your Installation Media
+
+If you followed the Server Setup guide, you should already have Ventoy on your USB drive:
+
+1. **Copy the Proxmox ISO** to your Ventoy USB drive
+2. **Safely eject** the USB drive
+3. **Insert it into your server**
+
+### Step 3: Boot and Start Installation
+
+1. **Power on your server** with the USB drive inserted
+2. **Select the USB drive** from the boot menu (usually F12 or F11)
+3. **Choose "Proxmox VE"** from the Ventoy menu
+4. **Select "Install Proxmox VE"** (the first option)
+
+### Step 4: Basic Installation Configuration
+
+The installer will guide you through several screens:
+
+#### Welcome Screen
+- Click "Next" to continue
+
+#### License Agreement
+- Read and accept the license terms
+- Click "I agree"
+
+#### Target Harddisk
+- **Select your main drive** (usually the SSD you want to install on)
+- **Filesystem**: Leave as "ext4" (default is fine for beginners)
+- **Click "Next"**
+
+> **Important**: This will erase everything on the selected drive!
+
+#### Location and Time Zone
+- **Country**: Select your country
+- **Time zone**: Should auto-populate correctly
+- **Keyboard Layout**: Choose your keyboard layout
+- **Click "Next"**
+
+#### Administrator Password and Email
+- **Password**: Choose a strong password (you'll need this to log in!)
+- **Confirm Password**: Type it again
+- **Email**: Enter your email address (for system notifications)
+- **Click "Next"**
+
+#### Management Network Configuration
+This is the most important screen for beginners:
+
+**Hostname**:
+- Change from "proxmox" to something like "homelab" or "pve"
+- Format: `homelab.local` or `pve.yourdomain.com`
+
+**IP Address**:
+- Use the static IP you planned (e.g., `192.168.1.100`)
+- **Don't use DHCP** for servers!
+
+**Netmask**:
+- Usually `255.255.255.0` (or `/24`)
+
+**Gateway**:
+- Your router's IP address (usually `192.168.1.1`)
+
+**DNS Server**:
+- Use your router's IP (`192.168.1.1`) or public DNS (`8.8.8.8`)
+
+#### Summary
+- **Review all settings** carefully
+- **Click "Install"** when everything looks correct
+
+### Step 5: Installation Process
+
+- The installation takes about 10-15 minutes
+- You'll see a progress bar and log messages
+- **Don't interrupt the process!**
+- When complete, you'll see a "Installation successful" message
+- **Remove the USB drive** and click "Reboot"
+
+## First Boot and Initial Setup
+
+### Step 6: Accessing the Web Interface
+
+After your server reboots:
+
+1. **Wait for the boot process** (about 1-2 minutes)
+2. **Look for the login screen** on your server's monitor
+3. **Note the IP address** displayed (should match what you configured)
+
+**Example boot screen message:**
+```
+Welcome to the Proxmox Virtual Environment. Please use your web browser to
+configure this server - connect to:
+
+  https://192.168.1.100:8006/
+
+```
+
+### Step 7: First Web Login
+
+1. **Open a web browser** on your main computer
+2. **Navigate to**: `https://YOUR-SERVER-IP:8006`
+   - Example: `https://192.168.1.100:8006`
+3. **Accept the security warning** (it's normal for self-signed certificates)
+4. **Log in with**:
+   - **Username**: `root`
+   - **Password**: The password you set during installation
+   - **Realm**: `Linux PAM standard authentication`
+
+### Step 8: Initial Configuration
+
+#### Remove Enterprise Repository Warning
+
+You'll see a warning about enterprise repositories. Here's how to fix it:
+
+1. **Click on your server name** in the left panel
+2. **Go to "Shell"** (opens a command line)
+3. **Run these commands**:
+
+```bash
+# Remove enterprise repository
+echo "# deb https://enterprise.proxmox.com/debian/pve bookworm pve-enterprise" > /etc/apt/sources.list.d/pve-enterprise.list
+
+# Add community repository
+echo "deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription" > /etc/apt/sources.list.d/pve-no-subscription.list
+
+# Update package lists
+apt update
+```
+
+#### Update Your System
+
+Still in the shell, run:
+
+```bash
+# Upgrade all packages
+apt full-upgrade -y
+
+# Reboot to ensure everything is working
+reboot
+```
+
+**Wait for the reboot** (about 2-3 minutes), then log back into the web interface.
+
+### Step 9: Basic Security Setup (Optional but Recommended)
+
+For beginners, the default security is adequate for a home network. However, if you want to improve security:
+
+#### Change Default SSH Port (Optional)
+```bash
+# Edit SSH configuration
+nano /etc/ssh/sshd_config
+
+# Find the line "#Port 22" and change it to:
+Port 2222
+
+# Restart SSH service
+systemctl restart sshd
+```
+
+#### Create a Non-Root User (Optional)
+```bash
+# Create a new user
+adduser homelab-admin
+
+# Add to sudo group
+usermod -aG sudo homelab-admin
+```
+
+> **For beginners**: You can skip the advanced security setup initially and focus on learning the basics. You can always enhance security later!
+
+## Understanding the Proxmox Interface
+
+### Main Dashboard Overview
+
+Once logged in, you'll see the Proxmox web interface with several key areas:
+
+**Left Panel (Server View)**:
+- **Datacenter**: Overall cluster management
+- **Your Server Name**: Individual server management
+- **Local Storage**: Storage management
+
+**Center Panel**:
+- **Summary**: System overview and statistics
+- **Shell**: Command line access
+- **Updates**: System updates
+- **Firewall**: Network security settings
+
+**Right Panel**:
+- **Tasks**: Running and completed operations
+- **Logs**: System messages and errors
+
+### Key Concepts for Beginners
+
+**Virtual Machines (VMs)**:
+- Complete computer systems running inside your server
+- Each VM has its own operating system
+- More resource-intensive but fully isolated
+
+**Containers (LXC)**:
+- Lightweight virtualization
+- Share the host's kernel but isolated file systems
+- More efficient for running services
+
+**Storage**:
+- **local**: System storage (where Proxmox is installed)
+- **local-lvm**: Virtual machine storage
+- You can add more storage later
+
+---
+
+## What's Next?
+
+Congratulations! You now have a working Proxmox hypervisor. This is a major milestone in your homelab journey!
+
+### Your Next Steps:
+
+1. **Explore the Interface**: Click around and familiarize yourself with the layout
+2. **Create Your First VM**: Start with a simple Linux virtual machine
+3. **Set Up Basic Services**: Install essential applications for your homelab
+4. **Learn Backup Strategies**: Protect your work with proper backups
+
+### Before You Continue:
+
+- **Take a snapshot** of your current setup (we'll cover this in the next section)
+- **Document your network settings** (IP addresses, passwords, etc.)
+- **Bookmark the web interface** for easy access
+
+---
+
+## Troubleshooting Common Issues
+
+### Can't Access Web Interface
+- **Check IP address**: Verify you're using the correct IP
+- **Check network connection**: Ensure your computer and server are on the same network
+- **Try different browser**: Some browsers have issues with self-signed certificates
+
+### Forgot Root Password
+- **Boot from USB**: Use the Proxmox installer in rescue mode
+- **Reset password**: Follow the rescue mode instructions
+
+### Enterprise Repository Warnings
+- **Follow Step 8 above**: Remove enterprise repositories and add community ones
+- **This is normal**: Proxmox shows these warnings for non-paying users
+
+### System Updates Fail
+- **Check internet connection**: Ensure your server can reach the internet
+- **Verify DNS settings**: Make sure DNS is configured correctly
+- **Try manual update**: Use the shell to run `apt update && apt upgrade`
+
+---
+
+## Security Considerations for Beginners
+
+While we've kept security simple for this initial setup, here are important considerations:
+
+### Network Security
+- **Keep your homelab on your home network** (don't expose it to the internet initially)
+- **Use strong passwords** for all accounts
+- **Regular updates** keep your system secure
+
+### Access Control
+- **Limit physical access** to your server
+- **Use the web interface** instead of direct console access when possible
+- **Consider VPN access** if you need remote connectivity
+
+### Backup Strategy
+- **Regular backups** are your best security against data loss
+- **Test your backups** to ensure they work
+- **Keep backups offline** or on separate systems
+
+---
+
+<div style="display: flex; gap: 1.5rem; justify-content: space-between; margin-top: 3rem;">
+    <a href="/en/Server" style="padding: 1rem 2rem; font-size: 1.1rem; font-weight: 600; text-decoration: none; border-radius: 25px; text-transform: uppercase; letter-spacing: 1px; background: linear-gradient(45deg, #ff6b6b, #ee5a24); color: white; box-shadow: 0 5px 15px rgba(238, 90, 36, 0.4); transition: all 0.3s ease;">
+        ← Server Setup
+    </a>
+    <a href="/en/First-VM" style="padding: 1rem 2rem; font-size: 1.1rem; font-weight: 600; text-decoration: none; border-radius: 25px; text-transform: uppercase; letter-spacing: 1px; background: linear-gradient(45deg, #00ffff, #00d4ff); color: #1a1a2e; box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4); transition: all 0.3s ease;">
+        First VM →
+    </a>
+</div>

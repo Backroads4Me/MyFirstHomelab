@@ -78,8 +78,11 @@ If you’re just starting out, here are some tips for choosing the right equipme
 
 Once you’ve got your hardware ready, we’ll move on to the next step: setting up your server!
 
-<div style="display: flex; gap: 1.5rem; justify-content: center; margin-top: 3rem;">
+<div style="display: flex; gap: 1.5rem; justify-content: space-between; margin-top: 3rem;">
+    <a href="/en/home" style="padding: 1rem 2rem; font-size: 1.1rem; font-weight: 600; text-decoration: none; border-radius: 25px; text-transform: uppercase; letter-spacing: 1px; background: linear-gradient(45deg, #ff6b6b, #ee5a24); color: white; box-shadow: 0 5px 15px rgba(238, 90, 36, 0.4); transition: all 0.3s ease;">
+        ← Home
+    </a>
     <a href="/en/Server" style="padding: 1rem 2rem; font-size: 1.1rem; font-weight: 600; text-decoration: none; border-radius: 25px; text-transform: uppercase; letter-spacing: 1px; background: linear-gradient(45deg, #00ffff, #00d4ff); color: #1a1a2e; box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4); transition: all 0.3s ease;">
-        Server
+        Server Setup →
     </a>
 </div>
