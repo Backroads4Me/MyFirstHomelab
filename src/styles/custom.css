@@ -1,0 +1,178 @@
+/* =========================== */
+/* Declare cascade layers first */
+/* =========================== */
+@layer starlight, six, homelab;
+
+/* Sidebar text: in starlight layer to beat Six !important */
+@layer starlight {
+  /* Inactive links: darker gray, heavier weight in light mode */
+  :root[data-theme="light"] .entry-link {
+    color: #1f1f1f !important;
+    font-weight: 400 !important;
+  }
+  /* Active page + hover: always white (higher specificity) */
+  :root[data-theme="light"] .entry-link[aria-current="page"],
+  :root[data-theme="light"] .entry-link[aria-current="true"],
+  :root .entry-link:hover {
+    color: #ffffff !important;
+  }
+}
+
+/* =========================== */
+/* Theme overrides */
+/* =========================== */
+@layer homelab {
+
+  :root:root[data-theme="dark"] {
+    --primary: #0b85aa;
+    --primary-foreground: #ffffff;
+    --accent: #0b85aa;
+    --accent-foreground: #ffffff;
+    --foreground: #d1d5db;
+    --sl-color-text: #d1d5db;
+    --muted-foreground: #a1a1aa;
+    --sl-color-accent-low: #00273d;
+    --sl-color-accent: #0071a7;
+    --sl-color-accent-high: #92d1fe;
+  }
+
+  :root:root[data-theme="light"] {
+    --primary: #0b85aa;
+    --primary-foreground: #ffffff;
+    --accent: #0b85aa;
+    --accent-foreground: #ffffff;
+    --sl-color-accent-low: #b0deff;
+    --sl-color-accent: #0073aa;
+    --sl-color-accent-high: #003653;
+  }
+
+  /* Hero Title & Tagline */
+  .six-hero-title {
+    font-size: clamp(2rem, 5vw, 3rem) !important;
+  }
+
+  .six-hero-tagline {
+    font-size: clamp(1rem, 2vw, 1.5rem) !important;
+  }
+
+  /* Card adjustments */
+  .starlight-card__content p {
+    margin: 0;
+  }
+
+  .starlight-card__title {
+    gap: 0.5rem;
+    margin-block-start: 0;
+    margin-block-end: 0.25rem;
+  }
+
+  .starlight-card {
+    padding: 1.75rem;
+    border-radius: 0.5rem;
+  }
+}
+
+/* Sidebar section titles */
+.entry-title {
+  color: var(--foreground-light) !important;
+}
+
+/* Light mode body and heading text */
+:root[data-theme="light"] {
+  --sl-color-text: #1f1f1f;
+  --foreground: #1f1f1f;
+  --foreground-light: #111111;
+  --muted-foreground: #555555;
+}
+
+/* Hero Button */
+html body .hero .actions a.primary {
+  min-height: 3.25rem !important;
+  padding-inline: 1.75rem !important;
+  font-size: clamp(1.1rem, 1.75vw, 1.35rem) !important;
+  font-weight: 700 !important;
+}
+
+/* Site footer */
+footer.footer .footer-text {
+  text-align: center !important;
+}
+
+/* Brand color overrides */
+:root[data-theme="dark"] {
+  --primary: #0b85aa !important;
+  --primary-foreground: #ffffff !important;
+  --card: #086a84 !important;
+}
+:root[data-theme="light"] {
+  --primary: #0b85aa !important;
+  --primary-foreground: #ffffff !important;
+  --card: #086a84 !important;
+}
+:root:not([data-theme]) {
+  --primary: #0b85aa !important;
+  --primary-foreground: #ffffff !important;
+  --card: #086a84 !important;
+}
+
+/* Global styles */
+main > .markdown-wrapper > .sl-markdown-content {
+  max-width: 90rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container-wrapper-main > .aside .sidebar {
+    position: sticky !important;
+    top: 0 !important;
+    width: auto !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow-y: auto !important;
+    overflow-x: hidden;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+.site-title .logo-size {
+  height: calc(var(--sl-nav-height) * 0.7);
+  width: auto;
+  align-self: center;
+  flex-shrink: 0;
+}
+
+.header-nav svg {
+  height: 1.5rem;
+  width: auto;
+}
+
+/* Landing hero: center the stack and tame the logo size (theme default is a
+   left-aligned column with the full-width image on top) */
+.hero {
+  align-items: center !important;
+  text-align: center;
+  margin-inline: auto;
+  max-width: 46rem;
+}
+
+.hero > img {
+  width: clamp(10rem, 30vw, 15rem);
+  height: auto;
+  margin-inline: auto;
+  filter: drop-shadow(0 0 2.5rem rgba(34, 211, 238, 0.25));
+}
+
+.hero .actions {
+  justify-content: center;
+}
+
+html:not([data-theme="dark"]) {
+  --background: #f7f6f3;
+}
+
+html[data-theme="dark"] {
+  --background: #0F172A;
+}
