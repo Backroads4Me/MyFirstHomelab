@@ -27,7 +27,7 @@ The site teaches exactly one opinionated path:
 ### The LXC decision
 
 Proxmox's documentation prefers a VM for Docker, and the site says so in one
-honest sentence. The site still uses an LXC, 100% because of snapshots. Instant
+honest sentence. The site still uses an LXC, 100%, because of snapshots. Instant
 rollback and cloning are what give a beginner confidence on modest hardware
 and make it easy to fix a mistake.
 
@@ -59,11 +59,8 @@ framing appears on the Start Here page and in the Next Steps send-off.
    it lands on a page. Never trust an old page, a search summary, or memory
    for exact commands, image names, ports, or UI labels.
 9. **Funnel, don't scatter.** The homepage sends everyone to Start Here and
-   the site intendes for every user to follow the same path. Deep links into
+   the site intends for every user to follow the same path. Deep links into
    the middle of the path are for cross-references inside the guide only.
-10. **External links open in new tabs** (handled globally — rehype plugin for
-    content, head script for theme links; never hand-write `target="_blank"`
-    in markdown).
 
 ## Technical Conventions
 

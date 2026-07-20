@@ -47,4 +47,4 @@ In Heimdall, choose **Add an application** and add:
 
 In Proxmox, select the Debian container, open **Snapshots**, choose **Take Snapshot**, and name it `working-dashboard`.
 
-Your homelab now has a front door and a restore point. Next, [break it on purpose](/guide/break-it-on-purpose/).
+Your homelab now has a front door and a restore point.

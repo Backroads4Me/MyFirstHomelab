@@ -43,4 +43,4 @@ Accept the host fingerprint when prompted and enter the Proxmox root password. T
 
 The lower-left corner now shows the remote host. Open **Terminal → New Terminal** and run `hostname`; it should print `pve`.
 
-Your workstation is ready. Next, [create the Debian container](/guide/create-your-container/).
+Your workstation is ready.

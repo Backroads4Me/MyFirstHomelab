@@ -43,4 +43,4 @@ In VS Code's **Remote Explorer**, add `ssh root@CONTAINER-IP`, choose the sugges
 cat /etc/debian_version
 ```
 
-You now have a Debian 13 LXC with key-based root SSH. Next, [install Docker](/guide/install-docker/).
+You now have a Debian 13 LXC with key-based root SSH.

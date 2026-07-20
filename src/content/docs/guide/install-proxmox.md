@@ -47,4 +47,4 @@ Switch to the community repository:
 4. Open **Updates**, choose **Refresh**, then **Upgrade**.
 5. Follow the prompts in the upgrade window and reboot if requested.
 
-You now have an updated Proxmox server. Next, [set up VS Code](/guide/set-up-vscode/).
+You now have an updated Proxmox server.

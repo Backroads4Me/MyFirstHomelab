@@ -171,11 +171,32 @@ main > .markdown-wrapper > .sl-markdown-content {
   width: clamp(10rem, 30vw, 15rem);
   height: auto;
   margin-inline: auto;
+  transform: translateY(-2.0rem);
   filter: drop-shadow(0 0 2.5rem rgba(34, 211, 238, 0.25));
 }
 
 .hero .actions {
   justify-content: center;
+}
+
+/* Keep the portrait photos on the About page from dominating wide screens. */
+.about-photo {
+  width: min(100%, 30rem);
+  margin: 1.5rem auto;
+}
+
+.about-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+.about-photo figcaption {
+  margin-top: 0.5rem;
+  color: var(--sl-color-gray-3);
+  font-size: var(--sl-text-sm);
+  text-align: center;
 }
 
 html:not([data-theme="dark"]) {

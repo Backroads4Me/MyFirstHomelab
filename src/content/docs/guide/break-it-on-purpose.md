@@ -31,4 +31,4 @@ Do not start the clone while the original is running: the saved DHCP lease can b
 
 A clone is a safe sandbox for a larger experiment and a starting template for your next server.
 
-You have proved your recovery tools work. Next, [add monitoring](/guide/add-monitoring/).
+You have proved you can break something and get it back.

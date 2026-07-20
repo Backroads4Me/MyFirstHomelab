@@ -61,6 +61,6 @@ services:
 
 Open `http://CONTAINER-IP:8888`. Add Beszel and Dozzle to Heimdall with their URLs.
 
-You now have Proxmox, a lightweight Debian container, Docker, a dashboard, health monitoring, and live logs—and you know how to recover from mistakes. Take one final snapshot, and make **snapshot before every experiment** your homelab habit.
+You now have Proxmox, a lightweight Debian container, Docker, a dashboard, health monitoring, and live logs—and you have proved you can undo a mistake. Take one final snapshot, and make **snapshot before every experiment** your homelab habit.
 
 Continue with [Next Steps](/reference/next-steps/).

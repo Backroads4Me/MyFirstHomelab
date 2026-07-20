@@ -42,4 +42,4 @@ Open `http://CONTAINER-IP:3000` and create the first admin account when prompted
 
 Dockhand can control every Docker container through the mounted Docker socket. Keep it on your trusted home network; do not expose port 3000 to the internet.
 
-Dockhand is ready. Next, [build your dashboard](/guide/your-dashboard/).
+Dockhand is ready.

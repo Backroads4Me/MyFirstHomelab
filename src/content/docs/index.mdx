@@ -4,35 +4,31 @@ description: Build your first Proxmox and Docker homelab on an old PC, one task 
 template: splash
 hero:
   title: Your First Homelab Made Simple
-  tagline: Feeling overwhelmed about where to start? Don't worry—I've been there too. This guide walks you through it, one step at a time.
+  tagline: Feeling overwhelmed about where to start? You're in the right place. This guide walks you through it, one step at a time.
   image:
     file: ../../../public/logo.svg
   actions:
-    - text: Get Started
+    - text: Start Here
       link: /start-here/what-youre-building/
       icon: right-arrow
       variant: primary
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid } from "@astrojs/starlight/components";
 
-Build a useful first homelab on an old PC. This guide makes the choices and gives you one small, working task at a time.
-
-## What You'll Learn
+## What You'll Build
 
 <CardGrid>
-  <Card title="Install Proxmox" icon="seti:config">
-    Turn an old PC into a server with a friendly web interface.
+  <Card title="Install Proxmox" icon="server">
+    Turn an old PC into a server.
   </Card>
-  <Card title="Create a Container" icon="seti:folder">
-    Build a small Debian container to hold everything you run.
+  <Card title="Create a Virtual Computer" icon="seti:folder">
+    Create a container on the server to install apps.
   </Card>
   <Card title="Run Apps with Docker" icon="seti:docker">
-    Install Docker and deploy a dashboard, monitoring, and logs.
+    Install Docker and deploy a few apps.
   </Card>
   <Card title="Break It and Roll It Back" icon="seti:clock">
-    Delete a working app on purpose, then restore it with one snapshot.
+    Restore a snapshot and experiment without fear.
   </Card>
 </CardGrid>
-
-Ready? [Start here](/start-here/what-youre-building/).

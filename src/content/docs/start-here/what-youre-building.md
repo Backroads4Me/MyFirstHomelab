@@ -9,7 +9,7 @@ You are turning one old PC into a home server.
 
 Proxmox manages the server and gives you snapshots and clones. A Debian Linux container (LXC) holds Docker. Dockhand manages the Docker apps, Heimdall links to them, Beszel shows system health, and Dozzle shows container logs.
 
-This guide makes every choice for you so you can build something real today. When you outgrow these choices—and you will—that is the guide working as intended.
+This guide makes every choice for you so you can build something real today. When you outgrow these choices—and you will—that is the point.
 
 Proxmox recommends running application containers such as Docker inside a virtual machine. This guide deliberately uses an unprivileged LXC with nesting enabled because snapshots and clones make experimentation less scary, and its tiny overhead suits modest hardware.
 

@@ -67,7 +67,7 @@ export default defineConfig({
         plugins: [
           starlightThemeSix({
             footerText:
-              'MyFirstHomelab • Your First Homelab Made Simple • Content <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> • Site code <a href="https://github.com/Backroads4Me/my-first-homelab/blob/main/LICENSE" target="_blank" rel="noopener">MIT</a>',
+              'MyFirstHomelab • Your First Homelab Made Simple • <a href="/reference/about/">About</a> • Content licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>',
           }),
         ],
         customCss: ["./src/styles/custom.css"],
