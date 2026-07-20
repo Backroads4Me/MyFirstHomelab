@@ -137,6 +137,15 @@ main > .markdown-wrapper > .sl-markdown-content {
   }
 }
 
+/* Fix sidebar collapse: theme-six sets `overflow: inherit !important` on
+   .container-group-link, so collapsed groups (max-height: 0; opacity: 0)
+   still overflow invisibly over the groups below and swallow their clicks. */
+.container-sidebar-entry.collapsed > .container-group-link {
+  overflow: hidden !important;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .site-title .logo-size {
   height: calc(var(--sl-nav-height) * 0.7);
   width: auto;
