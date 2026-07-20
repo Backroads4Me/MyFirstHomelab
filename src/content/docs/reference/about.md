@@ -25,7 +25,7 @@ My personal first homelab started with a Dell desktop I no longer needed after r
 Over the years, that hobby grew into the rack below. Much of the equipment was free or bought secondhand for very little. I have since downsized, but the HP DL380 Gen10 in the rack is still my primary self-hosting server.
 
 <figure class="about-photo">
-  <img src="/images/about/server-rack.webp" alt="A full homelab rack with networking equipment, servers, a console, and power protection." loading="lazy" />
+  <img src="/images/about/server-rack.webp" alt="A full homelab rack with labeled equipment: network switch, KVM console, three HP rack servers, a UPS, and a backup server." loading="lazy" />
   <figcaption>My homelab at its largest. Complete overkill, and I regret nothing.</figcaption>
 </figure>
 
