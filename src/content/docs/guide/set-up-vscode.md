@@ -21,13 +21,16 @@ Open **Terminal → New Terminal** inside VS Code and run:
 ssh-keygen -t ed25519
 ```
 
-Press Enter to accept the default file. Enter a passphrase you can remember.
+Press Enter to accept the default file and enter a passphrase you can remember.
+If the default file already exists, answer `n` when asked whether to overwrite
+it. Your existing key will work.
 
-Copy the key to Proxmox with these two commands, replacing the example IP:
+Copy the key to Proxmox with these two commands, replacing `PROXMOX-IP` with
+the address you reserved:
 
 ```bash
-scp ~/.ssh/id_ed25519.pub root@192.168.1.100:/tmp/homelab-key.pub
-ssh root@192.168.1.100 "umask 077; mkdir -p /root/.ssh; cat /tmp/homelab-key.pub >> /root/.ssh/authorized_keys; rm /tmp/homelab-key.pub"
+scp ~/.ssh/id_ed25519.pub root@PROXMOX-IP:/tmp/homelab-key.pub
+ssh root@PROXMOX-IP "umask 077; mkdir -p /root/.ssh; cat /tmp/homelab-key.pub >> /root/.ssh/authorized_keys; rm /tmp/homelab-key.pub"
 ```
 
 Accept the host fingerprint when prompted and enter the Proxmox root password. These commands work with the OpenSSH client included with current Windows, macOS, and Linux systems.
@@ -36,7 +39,7 @@ Accept the host fingerprint when prompted and enter the Proxmox root password. T
 
 1. Open **Remote Explorer** in the Activity Bar.
 2. Under **SSH**, choose **New Remote** (`+`).
-3. Enter `ssh root@192.168.1.100` with your server's IP.
+3. Enter `ssh root@PROXMOX-IP` with your server's reserved address.
 4. Choose the SSH configuration file suggested by VS Code.
 5. Select the new host and choose **Connect in New Window**.
 6. Accept the host fingerprint and unlock your key if prompted.

@@ -42,13 +42,15 @@ docker run --rm hello-world
 
 ## A Docker port is already allocated
 
-Only one container can use a particular host port. Find the owner:
+The ports in this guide do not overlap, so an earlier attempt is still using
+the port. Find the container:
 
 ```bash
 docker ps --format 'table {{.Names}}\t{{.Ports}}'
 ```
 
-In the new stack, change the number on the left side of the port mapping. For example, change `8080:80` to `8081:80`, redeploy, then browse to port `8081`.
+Open that container in Dockhand and remove its old stack. Redeploy the stack
+from the current guide page without changing its port.
 
 ## I broke it
 

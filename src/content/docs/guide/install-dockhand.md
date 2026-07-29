@@ -23,6 +23,7 @@ services:
     image: fnsys/dockhand:latest
     container_name: dockhand
     restart: unless-stopped
+    user: "0:0"
     ports:
       - "3000:3000"
     environment:
@@ -38,7 +39,8 @@ Start it:
 docker compose up -d
 ```
 
-Open `http://CONTAINER-IP:3000` and create the first admin account when prompted.
+Open `http://CONTAINER-IP:3000`. Go to **Settings → Authentication**, create
+your admin user, and enable authentication.
 
 Dockhand can control every Docker container through the mounted Docker socket. Keep it on your trusted home network; do not expose port 3000 to the internet.
 
