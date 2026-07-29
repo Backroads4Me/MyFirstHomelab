@@ -28,13 +28,10 @@ services:
       - ./config:/config
     ports:
       - "8080:80"
-      - "8443:443"
 ```
 
 4. Choose **Deploy** and wait for the container to show as running.
 5. Open `http://CONTAINER-IP:8080`.
-
-The host ports `8080` and `8443` avoid Heimdall's internal ports `80` and `443`, leaving those common host ports free.
 
 ## Add your first links
 

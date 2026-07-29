@@ -22,24 +22,27 @@ Boot the server from the USB stick and choose **Install Proxmox VE (Graphical)**
 1. Accept the license and select the drive to erase.
 2. Set your country, time zone, and keyboard layout.
 3. Set a strong root password and enter your email address.
-4. On **Management Network Configuration**, select the wired network interface and enter:
+4. On **Management Network Configuration**, select the wired network interface. The installer fills in the network values supplied by your router. Leave those values in place and enter:
    - **Hostname:** `pve.home.arpa`
-   - **IP Address:** an unused address on your home network, such as `192.168.1.100/24`
-   - **Gateway:** your router's address, often `192.168.1.1`
-   - **DNS Server:** your router's address
 5. Review the summary, install, remove the USB stick, and reboot.
 
-Choose an address outside your router's automatic DHCP range, or reserve it in the router first. This keeps the Proxmox address from changing.
-
 :::tip[USB does not boot]
-Open the PC's BIOS or boot menu with `F2`, `F12`, or `Del`, enable USB boot and Intel VT-x or AMD-V virtualization, then try again.
+Open the PC's BIOS or boot menu with `F2`, `F12`, or `Del`, enable USB boot, then try again.
 :::
 
 ## Log in and update
 
-On your everyday computer, open `https://YOUR-PROXMOX-IP:8006`. Accept the browser's warning for the server's self-signed certificate, then sign in as `root` with realm **Linux PAM standard authentication**.
+The physical server's console shows its management address after it starts.
+Open your router's admin page and create a DHCP reservation for the Proxmox
+server at that address. This keeps the router from assigning the address to
+another device.
 
-Switch to the community repository:
+On your everyday computer, open `https://PROXMOX-IP:8006`, replacing
+`PROXMOX-IP` with the reserved address. Accept the browser's warning for the
+server's self-signed certificate, then sign in as `root` with realm **Linux PAM
+standard authentication**.
+
+Set up the no-subscription repository:
 
 1. Select the Proxmox node, then **Updates → Repositories**.
 2. Select the enterprise repository and choose **Disable**.

@@ -27,7 +27,11 @@ The snapshot restored the container's filesystem and configuration to the moment
 
 Stop the Debian container, then choose **More → Clone**. Select **Full Clone**, give it a different hostname such as `docker-sandbox`, choose a new CT ID, and create it.
 
-Do not start the clone while the original is running: the saved DHCP lease can briefly give both copies the same IP. Start the clone by itself, confirm that it contains the same apps, then stop it. Select the clone and choose **More → Remove** to delete it, then restart the original.
+Keep the original stopped while you test the clone. A clone copies system
+identity files along with the apps, so running both at once can cause a network
+address conflict. Start the clone, confirm that it contains the same apps, then
+stop it. Select the clone and choose **More → Remove** to delete it, then
+restart the original.
 
 A clone is a safe sandbox for a larger experiment and a starting template for your next server.
 

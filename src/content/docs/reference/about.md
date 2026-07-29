@@ -12,7 +12,9 @@ This guide begins where I did: with one spare computer and a reason to see what 
 
 Homelabbing can quickly become overwhelming. There are endless combinations of hardware, operating systems, networking, storage, and applications. That freedom is part of the fun later, but it can make starting much harder than it needs to be.
 
-My First Homelab removes those choices. It gives you one deliberately opinionated path from an old PC to a small, working homelab. More importantly, it is built so that mistakes are cheap. When breaking things stops being scary, experimenting becomes fun instead of intimidating.
+My First Homelab removes those choices. It gives you one deliberately
+opinionated path from an old PC to a small, working homelab. The real goal is
+to make mistakes feel cheap. Once that happens, experimenting gets fun.
 
 You will eventually outgrow this guide. That is the point. It should leave you with a working system and the confidence to break it, fix it, and choose what comes next.
 
@@ -31,7 +33,7 @@ Over the years, that hobby grew into the rack below. Much of the equipment was f
 
 ## Where the hobby went
 
-I am probably unusual among homelab enthusiasts because I do not host a music or movie collection. My homelab is fairly stable these days, with a few big apps (Home Assistant, Nextcloud, Immich, Actual) and a variety of smaller ones. I maintain a couple of small open source projects and a few websites, and spend a lot of time exploring different technologies and AI projects. AI eventually turned my inexpensive e-waste hobby into a much more expensive one — running AI locally is entirely optional, and there is no cheap way to do it with powerful GPUs. My current workstation, with two NVIDIA workstation GPUs, is where I spend most of my project time today.
+I am probably unusual among homelab enthusiasts because I do not host a music or movie collection. My homelab is fairly stable these days, with a few big apps (Home Assistant, Nextcloud, Immich, Actual) and a variety of smaller ones. I maintain a couple of small open source projects and a few websites, and spend a lot of time exploring different technologies and AI projects. AI eventually turned my inexpensive e-waste hobby into a much more expensive one. Running AI locally is entirely optional, and there is no cheap way to do it without powerful GPUs.
 
 <figure class="about-photo">
   <img src="/images/about/ai-workstation.webp" alt="The inside of a dedicated AI workstation with two NVIDIA workstation GPUs." loading="lazy" />

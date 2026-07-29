@@ -33,11 +33,15 @@ Copy the single output line. In Proxmox, choose **Create CT** and complete the w
 
 Select the new container, open **Options → Features**, choose **Edit**, enable **Nesting**, and save. Docker will not start without nesting.
 
-Start the container. Its **Summary** page shows the DHCP address. Reserve that address for this container in your router so it stays stable.
+Start the container. Its **Summary** page shows the DHCP address. Return to
+your router's admin page and create a DHCP reservation for the container named
+`docker`. This keeps its address from changing.
 
 ## Connect to Debian
 
-In VS Code's **Remote Explorer**, add `ssh root@CONTAINER-IP`, choose the suggested SSH configuration file, and connect. Accept the fingerprint, then run:
+In VS Code's **Remote Explorer**, add `ssh root@CONTAINER-IP`, choose the
+suggested SSH configuration file, and connect. Accept the fingerprint, then
+run:
 
 ```bash
 cat /etc/debian_version
