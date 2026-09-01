@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="public/logo.png" alt="My First Homelab server logo" width="180" />
+</p>
+
 # Your First Homelab Made Simple
 
 Homelab advice can leave you with twenty open tabs and no idea what to do first.
@@ -9,11 +13,7 @@ and then deliberately breaks one. Rolling it back is the important bit: you
 finish with a working server and proof that a mistake does not have to mean
 starting over.
 
-<p align="center">
-  <img src="public/logo.png" alt="Home Server Logo" />
-</p>
-
-[Start the guide](https://myfirsthomelab.com/start-here/what-youre-building/)
+**[Start the guide →](https://myfirsthomelab.com/start-here/what-youre-building/)**
 
 ## Feedback
 
